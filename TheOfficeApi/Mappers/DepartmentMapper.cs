@@ -9,29 +9,23 @@ namespace TheOfficeApi.Mappers
 {
     public static class DepartmentMapper
     {
-        public static Department ToDepartmentDto(this Department department)
+        public static DepartmentDto ToDepartmentDto(this Department department)
         {
-            return new Department
+            return new DepartmentDto
             {
                 Id = department.Id,
                 Name = department.Name,
                 Code = department.Code,
-                Employees = department.Employees.Select(e => e.ToDepartmentEmployeesDto()).ToList()
+                Employees = department.Employees.Select(e =>  new DepartmentEmployeeDto
+                {
+                    Id = e.Id,
+                    FirstName = e.FirstName,
+                    LastName = e.LastName,
+                    Email = e.Email,
+                    Salary = e.Salary
+                }).ToList()
             };
         }
-
-        public static Employee ToDepartmentEmployeesDto(this Employee employeeModel)
-        {
-            return new Employee
-            {
-            Id = employeeModel.Id,
-            FirstName = employeeModel.FirstName,
-            LastName = employeeModel.LastName,
-            Email = employeeModel.Email,
-            Salary = employeeModel.Salary
-             };
-        }
-
          
     }
 }

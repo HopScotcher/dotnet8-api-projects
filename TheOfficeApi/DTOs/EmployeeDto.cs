@@ -16,12 +16,10 @@ namespace TheOfficeApi.DTOs
         public DepartmentDto? Department {get; set;}
     }
 
-    public class ToDepartmentEmployeesDto
-    {
-        public int Id {get ; set;}
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public decimal Salary { get; set; }
-    }
+    // public class EmployeeToDepartmentDto
+    // {
+    //     public int Id {get ; set;}
+    //     public string Name { get; set; } = string.Empty;
+    //     public string Code { get; set; } = string.Empty;
+    // }
 }

@@ -36,14 +36,23 @@ namespace TheOfficeApi.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteDepartment([FromRoute] int id)
     {
-        var dept = await _departmentService.DeleteAsync(id);
 
-        if(dept == null)
+            try
+            {
+            var dept = await _departmentService.DeleteAsync(id);
+
+            if(dept == null)
             {
                 return NotFound();
             }
-
-        return NoContent();
+            
+            return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message);
+            }
+       
     }
 
     [HttpPost]

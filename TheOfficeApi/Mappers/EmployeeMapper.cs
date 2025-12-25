@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using TheOfficeApi.DTOs;
 using TheOfficeApi.Models;
 
@@ -9,24 +10,27 @@ namespace TheOfficeApi.Mappers
 {
     public static class EmployeeMapper
     {
-        public static Employee ToEmployeeDto(this Employee employeeModel)
+        public static EmployeeDto ToEmployeeDto(this Employee employeeModel)
         {
-            return new Employee{
+            return new EmployeeDto{
+            Id = employeeModel.Id,
             FirstName = employeeModel.FirstName,
             LastName = employeeModel.LastName,
             Email = employeeModel.Email,
             Salary = employeeModel.Salary,
-            Department = employeeModel.Department.ToEmployeeDepartmentsDto()
+            // Department = employeeModel.Department.Select(dept => dept.ToEmployeeDepartmentDto()).ToList()
+            Department = employeeModel.Department?.ToEmployeeDepartmentDto()
+
         };
     }
 
-    public static Department ToEmployeeDepartmentsDto(this Department dept)
+    public static DepartmentDto ToEmployeeDepartmentDto(this Department dept)
         {
-            return new Department
+            return new DepartmentDto
             {
                 Id = dept.Id,
                 Name = dept.Name,
-                Code = dept.Code,
+                Code = dept.Code
             };
         }
     

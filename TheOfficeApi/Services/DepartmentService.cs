@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -33,11 +34,16 @@ namespace TheOfficeApi.Services
 
         public async Task<Department?> DeleteAsync(int id)
         {
-            var department = await _dbContext.Departments.FirstOrDefaultAsync(dept => dept.Id == id);
+            var department = await _dbContext.Departments.Include(dept => dept.Employees).FirstOrDefaultAsync(dept => dept.Id == id);
 
             if(department == null)
             {
                 return null;
+            }
+
+            if (department.Employees.Any())
+            {
+                throw new InvalidOperationException("Cannot delete department with employees");
             }
 
             _dbContext.Departments.Remove(department);
@@ -49,12 +55,12 @@ namespace TheOfficeApi.Services
 
         public async Task<List<Department>> GetAllAsync()
         {
-            return await _dbContext.Departments.ToListAsync();
+            return await _dbContext.Departments.Include(dept => dept.Employees).ToListAsync();
         }
 
         public async Task<Department?> GetByIdAsync(int id)
         {
-             var dept = await _dbContext.Departments.FirstOrDefaultAsync(dept => dept.Id == id);
+             var dept = await _dbContext.Departments.Include(dept => dept.Employees).FirstOrDefaultAsync(dept => dept.Id == id);
 
              if(dept == null)
             {
