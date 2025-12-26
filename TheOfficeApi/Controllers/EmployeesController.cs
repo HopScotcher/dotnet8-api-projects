@@ -70,6 +70,26 @@ namespace TheOfficeApi.Controllers
         }
 
 
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateEmployee([FromRoute] int id, UpdateEmployeeDto updateEmployeeDto)
+        {
+            try
+            {
+                var updatedEmployee = _employeeService.UpdateByIdAsync(id, updateEmployeeDto);
+
+                if(updatedEmployee == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(updatedEmployee);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);  
+            }
+        }
+
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteEmployee([FromRoute] int id)
         {

@@ -11,6 +11,7 @@ namespace TheOfficeApi.Interfaces
     {
         Task<List<Employee>> GetAllAsync();
         Task<Employee?> CreateAsync(CreateEmployeeDto createEmployeeDto);
+        Task<Employee?> UpdateByIdAsync(int id, UpdateEmployeeDto updateEmployeeDto);
         Task<Employee?> GetByIdAsync(int id);
         Task<Employee?> DeleteAsync(int id);
 

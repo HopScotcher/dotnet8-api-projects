@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using TheOfficeApi.Data;
+using TheOfficeApi.DTOs;
 using TheOfficeApi.Interfaces;
 using TheOfficeApi.Models;
 
@@ -66,6 +67,21 @@ namespace TheOfficeApi.Services
             {
                 return null;
             }
+
+            return dept;
+        }
+
+        public async Task<Department?> UpdateByIdAsync(int id, UpdateDepartmentDto departmentDto)
+        {
+            var dept = await _dbContext.Departments.FirstOrDefaultAsync(dept => dept.Id == id);
+
+            if(dept == null)
+            {
+                return null;
+            }
+
+            dept.Name = departmentDto.Name;
+            dept.Code = departmentDto.Code;
 
             return dept;
         }

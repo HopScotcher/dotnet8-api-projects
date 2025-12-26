@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using TheOfficeApi.DTOs;
 using TheOfficeApi.Interfaces;
 using TheOfficeApi.Mappers;
 using TheOfficeApi.Models;
@@ -78,5 +79,25 @@ namespace TheOfficeApi.Controllers
             }
 
             return Ok(dept.ToDepartmentDto());
+        }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateDepartmentById([FromRoute] int id, UpdateDepartmentDto departmentDto)
+        {
+            var dept = await _departmentService.GetByIdAsync(id);
+
+            if(dept == null)
+            {
+                return NotFound();
+            }
+
+            var updatedDept = await _departmentService.UpdateByIdAsync(id, departmentDto);
+
+            if (updatedDept == null)
+            {
+                return BadRequest("Could not update department, try again later");
+            }
+
+            return Ok(updatedDept.ToDepartmentDto());
         }}
 }

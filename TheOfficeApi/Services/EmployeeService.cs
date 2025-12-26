@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Validations;
 using TheOfficeApi.Data;
 using TheOfficeApi.DTOs;
 using TheOfficeApi.Interfaces;
@@ -85,5 +86,24 @@ namespace TheOfficeApi.Services
 
             return employee;
              }
+
+        public async Task<Employee?> UpdateByIdAsync(int id, UpdateEmployeeDto updateEmployeeDto)
+        {
+            var employee = await _dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
+
+            if(employee == null)
+            {
+                return null;
+            }
+
+            employee.FirstName = updateEmployeeDto.FirstName;
+            employee.LastName= updateEmployeeDto.LastName;
+            employee.Email = updateEmployeeDto.Email;
+            employee.Salary = updateEmployeeDto.Salary;
+            employee.DepartmentId = updateEmployeeDto.DepartmentId;
+
+
+            return employee;
         }
+    }
     }
