@@ -9,7 +9,7 @@ namespace TheOfficeApi.Interfaces
 {
     public interface IEmployeeService
     {
-        Task<List<Employee>> GetAllAsync();
+        Task<List<Employee>> GetAllAsync(EmployeeQueryDto query);
         Task<Employee?> CreateAsync(CreateEmployeeDto createEmployeeDto);
         Task<Employee?> UpdateByIdAsync(int id, UpdateEmployeeDto updateEmployeeDto);
         Task<Employee?> GetByIdAsync(int id);

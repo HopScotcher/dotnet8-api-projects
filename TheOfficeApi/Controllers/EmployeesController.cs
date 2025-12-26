@@ -25,9 +25,9 @@ namespace TheOfficeApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployees()
+        public async Task<IActionResult> GetAllEmployees([FromQuery] EmployeeQueryDto query)
         {
-            var employees =  await _employeeService.GetAllAsync();
+            var employees =  await _employeeService.GetAllAsync(query);
  
             var employeeDto =  employees.Select(e => e.ToEmployeeDto()).ToList();
 

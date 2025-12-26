@@ -70,9 +70,35 @@ namespace TheOfficeApi.Services
             return employee;
         }
 
-        public async Task<List<Employee>> GetAllAsync()
+        public async Task<List<Employee>> GetAllAsync(EmployeeQueryDto query)
         {
-        return await _dbContext.Employees.Include(e => e.Department).ToListAsync();
+         var employees = _dbContext.Employees.Include(e => e.Department).AsQueryable();
+            
+            if (!string.IsNullOrWhiteSpace(query.DepartmentId.ToString()))
+            {
+                employees = employees.Where(e => e.DepartmentId == query.DepartmentId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.MinSalary.ToString()))
+            {
+                employees  = employees.Where(e => e.Salary >= query.MinSalary);
+            }
+
+             if (!string.IsNullOrWhiteSpace(query.MaxSalary.ToString()))
+            {
+                employees  = employees.Where(e => e.Salary >= query.MaxSalary);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if(query.SortBy.Equals("LastName", StringComparison.OrdinalIgnoreCase)){
+                    employees = query.IsDescending? employees.OrderByDescending(e => e.LastName) : employees.OrderBy(e => e.LastName);
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            return await employees.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
  
         public async Task<Employee?> GetByIdAsync(int id)
