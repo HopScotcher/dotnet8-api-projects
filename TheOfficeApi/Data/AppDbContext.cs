@@ -2,19 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using TheOfficeApi.DTOs;
 using TheOfficeApi.Models;
 
 namespace TheOfficeApi.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options ) :base(options)
         {
         }
-         public DbSet<Employee> Employees {get; set;}
+        public DbSet<Employee> Employees {get; set;}
         public DbSet<Department> Departments {get; set;}
+        public DbSet<RefreshToken> RefreshTokens {get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
